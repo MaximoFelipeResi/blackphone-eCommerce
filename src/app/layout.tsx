@@ -1,10 +1,10 @@
-
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { CartProvider } from './context/CartContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,7 +13,6 @@ export const metadata = {
   description: 'BlackPhone: Tu tienda de tecnología especializada en productos Apple, Samsung, Motorola, Xiaomi, Google Pixel, OnePlus, Nothing Phone, TCL y más. Ofrecemos servicio técnico, reparación de PCs, ensamblaje personalizado y una amplia gama de accesorios para celulares.',
   keywords: 'BlackPhone, tecnología, tienda de tecnología, Apple, Samsung, Motorola, Xiaomi, Google Pixel, OnePlus, Nothing Phone, TCL, servicio técnico, reparación de PCs, ensamblaje de PCs, accesorios para celulares, productos electrónicos, componentes de PC, gadgets, informática, reparación de celulares'
 };
-
 
 export default function RootLayout({
   children,
@@ -37,9 +36,6 @@ export default function RootLayout({
         <meta http-equiv='pragma' content='no-cache' />
         <meta http-equiv="Content-Security-Policy" content="" />
 
-
-
-
         <link rel="icon" href="/images/logo.png"></link>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
         <script src="https://kit.fontawesome.com/" crossOrigin="anonymous"></script>
@@ -47,9 +43,11 @@ export default function RootLayout({
         <title>{metadata.title}</title>
       </head>
       <body className={inter.className}>
-        <Navbar />
-        {children}
-        <Footer />
+        <CartProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

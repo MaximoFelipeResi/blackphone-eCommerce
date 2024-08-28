@@ -3,12 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { Product } from "../assets/types";
+import { useCart } from '@/app/context/CartContext';
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { addToCart } = useCart();
   return (
     <CardContainer className="card-container inter-var">
       <CardBody className="card-body bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full sm:w-[20rem] h-auto rounded-xl p-6 border">
@@ -36,15 +38,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
         </CardItem>
         <div className="flex flex-col sm:flex-row justify-between items-center mt-10 sm:mt-20 space-y-2 sm:space-y-0">
-          <CardItem
-            translateZ={20}
-            as={Link}
-            href="https://api.whatsapp.com/send?phone=541130732191&text=&source=&data=&app_absent="
-            target="__blank"
+          <button
+            onClick={() => addToCart(product)}
             className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-red-500 text-white sm:mr-2"
           >
-            Consultar colores →
-          </CardItem>
+             Agregar al Carrito →
+          </button>
           <CardItem
             translateZ={20}
             as={Link}

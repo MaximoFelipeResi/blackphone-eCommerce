@@ -1,14 +1,36 @@
-"use client";
-import React, { useState } from "react";
-import HeroShop from "../components/HeroShop";
-import ProductList from "../components/ProductList";
-import { productsData as initialProducts } from "../assets/products";
-import { Product } from "../assets/types";
+"use client"
+import React, { Suspense, useEffect, useState } from 'react';
+import HeroShop from '../components/HeroShop';
+import ProductList from '../components/ProductList';
+import { Product } from '../assets/types';
+import LoadingSpinner from '../components/LoadingSpinner'; 
 
 const Tienda: React.FC = () => {
-  const [productsData, setProductsData] = useState<Product[]>(initialProducts);
+  const [productsData, setProductsData] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedBrand, setSelectedBrand] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/products');
+        if (!response.ok) {
+          throw new Error('Error al obtener los productos');
+        }
+        const products = await response.json();
+        setProductsData(products);
+      } catch (err) {
+        setError('Error al obtener los productos');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchTerm = e.target.value;
@@ -23,7 +45,7 @@ const Tienda: React.FC = () => {
   };
 
   const filterProducts = (searchTerm: string, selectedBrand: string) => {
-    let filteredProducts = initialProducts;
+    let filteredProducts = productsData;
 
     if (searchTerm) {
       filteredProducts = filteredProducts.filter(item =>
@@ -39,6 +61,14 @@ const Tienda: React.FC = () => {
 
     setProductsData(filteredProducts);
   };
+
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <section className="mt-0">
@@ -67,7 +97,9 @@ const Tienda: React.FC = () => {
         </div>
       </div>
       <div className="max-w-screen-xl mx-auto">
-        <ProductList products={productsData} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <ProductList products={productsData} />
+        </Suspense>
       </div>
     </section>
   );

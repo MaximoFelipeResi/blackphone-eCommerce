@@ -23,6 +23,11 @@ export default function Navbar() {
                 Lista Precios
               </Link>
             </li>
+            <li>
+              <Link className="text-white font-semibold text-lg font-incompleeta gold-color" href="/carrito">
+                Carrito
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
