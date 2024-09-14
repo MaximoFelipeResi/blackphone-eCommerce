@@ -6,5 +6,7 @@ export interface Product {
     description: string;
     prodImg: string;
     brand: string;
+    quantity: number;
+    stock: number;
   }
   

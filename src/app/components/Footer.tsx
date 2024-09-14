@@ -45,14 +45,8 @@ export default function Footer() {
         <div className="flex-1">
           <h2 className="text-lg font-semibold mb-4">Ubicación</h2>
           <div className="w-full h-64">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3276.282158656514!2d-58.3939745588095!3d-34.79884250672701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcd33f5e0248f9%3A0xa8358dbed54fa6e4!2sP.%C2%BA%20de%20la%20Delicia%201181%2C%20Adrogu%C3%A9%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1718495975699!5m2!1ses!2sar" 
-              width="100%" 
-              height="100%" 
-              title="Google Maps BlackPhone Adrogue"
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade">
-            </iframe>
+            <p>P.º de la Delicia 1181, Adrogué, Provincia de Buenos Aires</p>
+            <p>Teléfono: +54 11 3073 2191</p>
           </div>
         </div>
       </div>

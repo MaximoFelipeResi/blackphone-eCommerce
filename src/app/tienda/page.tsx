@@ -1,12 +1,13 @@
-"use client"
-import React, { Suspense, useEffect, useState } from 'react';
-import HeroShop from '../components/HeroShop';
-import ProductList from '../components/ProductList';
-import { Product } from '../assets/types';
-import LoadingSpinner from '../components/LoadingSpinner'; 
+"use client";
+import React, { Suspense, useEffect, useState } from "react";
+import HeroShop from "../components/HeroShop";
+import ProductList from "../components/ProductList";
+import { Product } from "../assets/types";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Tienda: React.FC = () => {
   const [productsData, setProductsData] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -15,14 +16,15 @@ const Tienda: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products');
+        const response = await fetch("/api/products");
         if (!response.ok) {
-          throw new Error('Error al obtener los productos');
+          throw new Error("Error al obtener los productos");
         }
         const products = await response.json();
         setProductsData(products);
+        setFilteredProducts(products);
       } catch (err) {
-        setError('Error al obtener los productos');
+        setError("Error al obtener los productos");
         console.error(err);
       } finally {
         setLoading(false);
@@ -45,21 +47,21 @@ const Tienda: React.FC = () => {
   };
 
   const filterProducts = (searchTerm: string, selectedBrand: string) => {
-    let filteredProducts = productsData;
+    let filtered = productsData;
 
     if (searchTerm) {
-      filteredProducts = filteredProducts.filter(item =>
+      filtered = filtered.filter((item) =>
         item.model.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (selectedBrand && selectedBrand !== "Filtrar por marca") {
-      filteredProducts = filteredProducts.filter(item =>
-        item.brand.toLowerCase() === selectedBrand.toLowerCase()
+      filtered = filtered.filter(
+        (item) => item.brand.toLowerCase() === selectedBrand.toLowerCase()
       );
     }
 
-    setProductsData(filteredProducts);
+    setFilteredProducts(filtered);
   };
 
   if (loading) {
@@ -75,8 +77,12 @@ const Tienda: React.FC = () => {
       <HeroShop />
       <div className="filters-container">
         <div className="filter__widget p-4">
-          <select className="p-2 rounded-md" onChange={handleBrandFilter}>
-            <option>Filtrar por marca</option>
+          <select
+            className="p-2 rounded-md"
+            onChange={handleBrandFilter}
+            value={selectedBrand}
+          >
+            <option value="">Filtrar por marca</option>
             <option value="Apple">Apple</option>
             <option value="Samsung">Samsung</option>
             <option value="Motorola">Motorola</option>
@@ -98,7 +104,7 @@ const Tienda: React.FC = () => {
       </div>
       <div className="max-w-screen-xl mx-auto">
         <Suspense fallback={<LoadingSpinner />}>
-          <ProductList products={productsData} />
+          <ProductList products={filteredProducts} />
         </Suspense>
       </div>
     </section>
